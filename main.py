@@ -34,8 +34,8 @@ class Model(object):
     def __init__(self, schema, input_data, mode, one_hot_encoding):
         self.schema = schema
         #Model param
-        self.model_param = {'n_estimators': 1000, 'max_depth': 6, \
-                            'learning_rate': 0.1, 'loss': 'ls', 'verbose' : 1}
+        self.model_param = {'n_estimators': 1000, 'max_depth': 4, 'subsample': 0.90, \
+            'learning_rate': 0.05, 'loss': 'ls', 'verbose' : 1}
         if mode in [0,2]:
             #Train/validate
             self.data_label ,  self.data_features = self.preprocess(input_data, mode, one_hot_encoding)
@@ -97,8 +97,8 @@ class Model(object):
                        'hr13', 'hr14', 'hr15', 'hr16', 'hr17', 'hr18', \
                        'hr19', 'hr20', 'hr21', 'hr22', 'hr23', 'hr24', \
                        'tw1', 'tw2', 'tw3', 'tw3', 'tw4', 'tw5', 'tw6', 'tw7', \
-                        # 'm1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm10', 'm11', 'm12', \
-                        'tb1', 'tb2', 'tb3', 'tb4', 'tb5', \
+                       #'m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm10', 'm11', 'm12', \
+                       'tb1', 'tb2', 'tb3', 'tb4', 'tb5', \
                        'season1', 'season2', 'season3', 'season4', 'holiday1', 'holiday2', 'weekend1', 'weekend2', \
                        'weather1', 'weather2', 'weather3', 'weather4', 'temp', 'atemp', 'humidity', 'windspeed']
 
@@ -130,8 +130,14 @@ class Model(object):
 
         #Plot Feature Importance
         feature_importance = 100.0 * (model.feature_importances_ / model.feature_importances_.max())
-        print feature_importance
-        print self.schema
+
+        sorted_idx = np.argsort(feature_importance)[::-1]
+
+        print(" Feature Importance ...")
+        for idx in sorted_idx :
+            print(str(feature_importance[idx]) + " : " + self.schema[idx] + " ")
+        print("\n ")
+
 
         #PDP
         fig, axs = plot_partial_dependence(model, self.data_features, [12, 13, 14, 15])
