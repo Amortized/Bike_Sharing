@@ -80,6 +80,8 @@ class Model(object):
                         dp.append(4)
                     else:
                         dp.append(5)
+
+                    dp.append(int(parse_dt.tm_year)) #Year
                        
                         
                      
@@ -99,12 +101,13 @@ class Model(object):
                        'tw1', 'tw2', 'tw3', 'tw3', 'tw4', 'tw5', 'tw6', 'tw7', \
                        #'m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm10', 'm11', 'm12', \
                        'tb1', 'tb2', 'tb3', 'tb4', 'tb5', \
+                       'y1', 'y2', \
                        'season1', 'season2', 'season3', 'season4', 'holiday1', 'holiday2', 'weekend1', 'weekend2', \
                        'weather1', 'weather2', 'weather3', 'weather4', 'temp', 'atemp', 'humidity', 'windspeed']
 
 
         #One-hot encoding on categorical features
-        params = {'categorical_features' : np.array([0,1,2,3,4,5,6])}
+        params = {'categorical_features' : np.array([0,1,2,3,4,5,6,7])}
         enc = OneHotEncoder(**params)
         
          
