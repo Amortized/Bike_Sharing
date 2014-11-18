@@ -60,7 +60,6 @@ class Model(object):
 
         features = []
         
-        
         for ele in data:
             dp = []
             for x in range(0, feature_range):
@@ -103,7 +102,11 @@ class Model(object):
                     else:
                         dp.append(0)  #Non Peak hour   
                     
-                        
+                    #Months when casual riders come in 
+                    if int(parse_dt.tm_mon) in [4,5,6,7,8,9,10]:
+                        dp.append(1)
+                    else:
+                        dp.append(0)
                      
                 elif x in [1,2,3,4]:
                     #Categorical features
@@ -113,7 +116,6 @@ class Model(object):
                     #Numerical features
                     dp.append(float(ele[x]))
             features.append(dp)
-        
         
         #Update the schema accordingly
         self.schema = ['hr1', 'hr2', 'hr3', 'hr4', 'hr5', 'hr6', \
@@ -125,12 +127,13 @@ class Model(object):
                        'y1', 'y2', \
                        'working_day_peak1', 'working_day_peak2', \
                        'non_working_day_peak1', 'non_working_day_peak2', \
+                       'casual_nonpeak_mon', 'casual_peak_mon', \
                        'season1', 'season2', 'season3', 'season4', 'holiday1', 'holiday2', 'workingday1', 'workingday2', \
                        'weather1', 'weather2', 'weather3', 'weather4', 'temp', 'atemp', 'humidity', 'windspeed']
 
 
         #One-hot encoding on categorical features
-        params = {'categorical_features' : np.array([0,1,2,3,4,5,6,7,8,9])}
+        params = {'categorical_features' : np.array([0,1,2,3,4,5,6,7,8,9,10])}
         enc = OneHotEncoder(**params)
         
          
