@@ -34,8 +34,8 @@ class Model(object):
     def __init__(self, schema, input_data, mode, one_hot_encoding):
         self.schema = schema
         #Model param
-        self.model_param = {'n_estimators': 1000, 'max_depth': 4, 'subsample': 0.90, \
-            'learning_rate': 0.05, 'loss': 'ls', 'verbose' : 1}
+        self.model_param = {'n_estimators': 100, 'max_depth': 6, 'subsample': 0.9, \
+            'learning_rate': 0.05, 'loss': 'ls', 'verbose' : 1, 'min_samples_leaf':30}
         if mode in [0,2]:
             #Train/validate
             self.data_label ,  self.data_features = self.preprocess(input_data, mode, one_hot_encoding)
@@ -70,18 +70,21 @@ class Model(object):
                     dp.append(int(parse_dt.tm_hour)) #Time of hour
                     dp.append(int(parse_dt.tm_wday)) #Week day
                     #dp.append(int(parse_dt.tm_mon)) #Month
+
+                    #Bin the time period
                     if int(parse_dt.tm_hour) >= 0 and int(parse_dt.tm_hour) < 6:
                         dp.append(1)
                     elif int(parse_dt.tm_hour) >= 6 and int(parse_dt.tm_hour) <= 9:
                         dp.append(2)
                     elif int(parse_dt.tm_hour) > 10 and int(parse_dt.tm_hour) <= 15:
                         dp.append(3)
-                    elif int(parse_dt.tm_hour) > 16 and int(parse_dt.tm_hour) <= 19:
+                    elif int(parse_dt.tm_hour) >= 16 and int(parse_dt.tm_hour) <= 19:
                         dp.append(4)
                     else:
                         dp.append(5)
 
-                    dp.append(int(parse_dt.tm_year)) #Year
+                    #Year
+                    dp.append(int(parse_dt.tm_year))
                        
                         
                      
@@ -147,7 +150,7 @@ class Model(object):
         
         plt.subplots_adjust(top=0.9)
         fig.savefig('pdp.png')
-        
+
         return  model
 
     def predict(self, model):
