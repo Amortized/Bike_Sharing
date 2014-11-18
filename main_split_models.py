@@ -61,6 +61,7 @@ class Model(object):
             feature_range = len(data[0])
 
         features = []
+        
         for ele in data:
             dp = []
             for x in range(0, feature_range):
@@ -71,49 +72,72 @@ class Model(object):
                     #Create new features
                     dp.append(int(parse_dt.tm_hour)) #Time of hour
                     dp.append(int(parse_dt.tm_wday)) #Week day
-                    #dp.append(int(parse_dt.tm_mon)) #Month
-
-                    #Bin the time period
+                    
+                    
+                      
+                    #Bin the time period based on day
                     if int(parse_dt.tm_hour) >= 0 and int(parse_dt.tm_hour) < 6:
                         dp.append(1)
                     elif int(parse_dt.tm_hour) >= 6 and int(parse_dt.tm_hour) <= 9:
                         dp.append(2)
-                    elif int(parse_dt.tm_hour) > 10 and int(parse_dt.tm_hour) <= 15:
+                    elif int(parse_dt.tm_hour) > 10 and int(parse_dt.tm_hour) <= 16:
                         dp.append(3)
-                    elif int(parse_dt.tm_hour) >= 16 and int(parse_dt.tm_hour) <= 19:
+                    elif int(parse_dt.tm_hour) > 16 and int(parse_dt.tm_hour) <= 19:
                         dp.append(4)
                     else:
                         dp.append(5)
+                    
+                    
 
                     #Year
                     dp.append(int(parse_dt.tm_year))
-
-
-
+                    
+                    #Bind based on time + working_day
+                    if int(ele[3]) == 1 and (int(parse_dt.tm_hour) in [7,8,17,18,19]):
+                        dp.append(1) #Peak hour
+                    else:
+                        dp.append(0) #Non Peak hour
+                        
+                    #Bind based on time _ non working day
+                    if int(ele[3]) == 0 and (int(parse_dt.tm_hour) in [10,11,12,13,14,15,16,17,18,19]):
+                        dp.append(1)  #Peak hour
+                    else:
+                        dp.append(0)  #Non Peak hour   
+                    
+                    #Months when casual riders come in 
+                    if int(parse_dt.tm_mon) in [4,5,6,7,8,9,10]:
+                        dp.append(1)
+                    else:
+                        dp.append(0)
+                     
                 elif x in [1,2,3,4]:
                     #Categorical features
                     dp.append(int(ele[x]))
+                                        
                 else :
                     #Numerical features
                     dp.append(float(ele[x]))
             features.append(dp)
-
+        
         #Update the schema accordingly
         self.schema = ['hr1', 'hr2', 'hr3', 'hr4', 'hr5', 'hr6', \
                        'hr7', 'hr8', 'hr9', 'hr10', 'hr11', 'hr12', \
                        'hr13', 'hr14', 'hr15', 'hr16', 'hr17', 'hr18', \
                        'hr19', 'hr20', 'hr21', 'hr22', 'hr23', 'hr24', \
                        'tw1', 'tw2', 'tw3', 'tw4', 'tw5', 'tw6', 'tw7', \
-                       #'m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm10', 'm11', 'm12', \
                        'tb1', 'tb2', 'tb3', 'tb4', 'tb5', \
                        'y1', 'y2', \
-                       'season1', 'season2', 'season3', 'season4', 'holiday1', 'holiday2', 'weekend1', 'weekend2', \
+                       'working_day_peak1', 'working_day_peak2', \
+                       'non_working_day_peak1', 'non_working_day_peak2', \
+                       'casual_nonpeak_mon', 'casual_peak_mon', \
+                       'season1', 'season2', 'season3', 'season4', 'holiday1', 'holiday2', 'workingday1', 'workingday2', \
                        'weather1', 'weather2', 'weather3', 'weather4', 'temp', 'atemp', 'humidity', 'windspeed']
 
 
         #One-hot encoding on categorical features
-        params = {'categorical_features' : np.array([0,1,2,3,4,5,6,7])}
+        params = {'categorical_features' : np.array([0,1,2,3,4,5,6,7,8,9,10])}
         enc = OneHotEncoder(**params)
+        
 
 
         if mode == 0 :
@@ -182,9 +206,9 @@ class Model(object):
 if __name__ == '__main__':
     args = list(sys.argv[1:])
     if len(args) < 2:
-        print "For Training -> python main.py 0 <train-file> <casual_model_object> <registered_model_object> <one-hot-encoding>"
-        print "For validation -> python main.py 2 <validate-file> <casual_model_object> <registered_model_object>  <one-hot-encoding>"
-        print "For Test     -> python main.py 1 <test-file> <casual_model_object> <registered_model_object>  <one-hot-encoding> <output-file>"
+        print "For Training -> python main_split_models.py 0 <train-file> <casual_model_object> <registered_model_object> <one-hot-encoding>"
+        print "For validation -> python main_split_models.py 2 <validate-file> <casual_model_object> <registered_model_object>  <one-hot-encoding>"
+        print "For Test     -> python main_split_models.py 1 <test-file> <casual_model_object> <registered_model_object>  <one-hot-encoding> <output-file>"
         sys.exit(1)
 
     if int(args[0]) in [0,1,2]:
