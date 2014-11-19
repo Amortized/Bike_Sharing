@@ -26,10 +26,9 @@ python combined_model.py 2 data/validate_.csv models/combined_model.p encoding/c
 
 python combined_model.py 1 data/test.csv models/combined_model.p encoding/combined_model_encoding.p output.csv 
 
-Above gives a score of : 0.41449 on the test set.
+Above gives a score of : 0.42356 on the test set.
 
-**** I also trained to two separate models to predict casual and registered biker rentals separately. Just run the file split_model.py using parameters as above . This should give you a slighly better score on the test set : 0.41900. 
-
+**** I also trained to two separate models to predict casual and registered biker rentals separately. Just run the file split_model.py using parameters as above . This should give you a slighly better score on the test set : 0.41449
 
 
 
