@@ -15,13 +15,16 @@ TO-DO : Train models respecting the above implied rule
 
 
 *Train the model 
-<\n> python combined_model.py 0 data/train_.csv models/combined_model.p encoding/combined_model_encoding.p 
+
+python combined_model.py 0 data/train_.csv models/combined_model.p encoding/combined_model_encoding.p 
 
 *Validate 
-<\n> python combined_model.py 2 data/validate_.csv models/combined_model.p encoding/combined_model_encoding.p
+
+python combined_model.py 2 data/validate_.csv models/combined_model.p encoding/combined_model_encoding.p
 
 *Predict on test set and upload to kaggle
-<\n> python combined_model.py 1 data/test.csv models/combined_model.p encoding/combined_model_encoding.p output.csv 
+
+python combined_model.py 1 data/test.csv models/combined_model.p encoding/combined_model_encoding.p output.csv 
 
 Above gives a score of : 0.41449 on the test set.
 
