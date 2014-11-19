@@ -10,6 +10,7 @@ np.set_printoptions(threshold=np.nan)
 import math;
 import pickle;
 from sklearn.ensemble import GradientBoostingRegressor;
+from sklearn.ensemble import RandomForestRegressor;
 from sklearn.preprocessing import OneHotEncoder;
 import csv;
 import matplotlib.pyplot as plt;
@@ -34,8 +35,8 @@ class Model(object):
     def __init__(self, schema, input_data, mode, one_hot_encoding):
         self.schema = schema
         #Model param
-        self.model_param = {'n_estimators': 150, 'max_features': 0.90, 'max_depth': 6, 'subsample': 0.9, \
-            'learning_rate': 0.05, 'loss': 'ls', 'verbose' : 1, 'min_samples_leaf': 30}
+        self.model_param = {'n_estimators': 1100, 'max_features': 1.0, \
+                            'verbose' : 1, 'min_samples_leaf': 1, 'n_jobs' : 20}
         if mode in [0,2]:
             #Train/validate
             self.data_label ,  self.data_features = self.preprocess(input_data, mode, one_hot_encoding)
@@ -153,7 +154,8 @@ class Model(object):
            return features
 
     def train(self):
-        model = GradientBoostingRegressor(**self.model_param)
+        #model = GradientBoostingRegressor(**self.model_param)
+        model = RandomForestRegressor(**self.model_param)
         model.fit(self.data_features, self.data_label)
 
         #Plot Feature Importance
@@ -166,12 +168,13 @@ class Model(object):
             print(str(feature_importance[idx]) + " : " + self.schema[idx] + " ")
         print("\n ")
 
-
+        '''
         #PDP
         fig, axs = plot_partial_dependence(model, self.data_features, [12, 13, 14, 15])
         
         plt.subplots_adjust(top=0.9)
         fig.savefig('pdp.png')
+        '''
 
         return  model
 
