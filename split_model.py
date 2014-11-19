@@ -207,9 +207,9 @@ class Model(object):
 if __name__ == '__main__':
     args = list(sys.argv[1:])
     if len(args) < 2:
-        print "For Training -> python main_split_models.py 0 <train-file> <casual_model_object> <registered_model_object> <one-hot-encoding>"
-        print "For validation -> python main_split_models.py 2 <validate-file> <casual_model_object> <registered_model_object>  <one-hot-encoding>"
-        print "For Test     -> python main_split_models.py 1 <test-file> <casual_model_object> <registered_model_object>  <one-hot-encoding> <output-file>"
+        print "For Training -> python split_model.py 0 <train-file> <casual_model_object> <registered_model_object> <one-hot-encoding>"
+        print "For validation -> python split_model.py 2 <validate-file> <casual_model_object> <registered_model_object>  <one-hot-encoding>"
+        print "For Test     -> python split_model.py 1 <test-file> <casual_model_object> <registered_model_object>  <one-hot-encoding> <output-file>"
         sys.exit(1)
 
     if int(args[0]) in [0,1,2]:

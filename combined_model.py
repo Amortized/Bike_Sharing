@@ -200,9 +200,9 @@ class Model(object):
 if __name__ == '__main__':
     args = list(sys.argv[1:])
     if len(args) < 2:
-        print "For Training -> python main.py 0 <train-file> <model_object> <one-hot-encoding>"
-        print "For validation -> python main.py 2 <validate-file> <model_object> <one-hot-encoding>"
-        print "For Test     -> python main.py 1 <test-file> <model_object> <one-hot-encoding> <output-file>"
+        print "For Training -> python combined_model.py 0 <train-file> <model_object> <one-hot-encoding>"
+        print "For validation -> python combined_model.py 2 <validate-file> <model_object> <one-hot-encoding>"
+        print "For Test     -> python combined_model.py 1 <test-file> <model_object> <one-hot-encoding> <output-file>"
         sys.exit(1)
 
     if int(args[0]) in [0,1,2]:
