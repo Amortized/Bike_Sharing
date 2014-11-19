@@ -10,6 +10,7 @@ np.set_printoptions(threshold=np.nan)
 import math;
 import pickle;
 from sklearn.ensemble import GradientBoostingRegressor;
+from sklearn.ensemble import RandomForestRegressor;
 from sklearn.preprocessing import OneHotEncoder;
 import csv;
 import matplotlib.pyplot as plt;
@@ -34,8 +35,8 @@ class Model(object):
     def __init__(self, schema, input_data, mode, one_hot_encoding):
         self.schema = schema
         #Model param
-        self.model_param = {'n_estimators': 100, 'max_depth': 6, 'subsample': 0.9, \
-                            'learning_rate': 0.05, 'loss': 'ls', 'verbose' : 1, 'min_samples_leaf':30}
+        self.model_param = {'n_estimators': 1000, 'max_features': 1.0, \
+                            'verbose' : 1, 'min_samples_leaf': 1, 'n_jobs' : 20}
         if mode in [0,2]:
             #Train/validate
             self.data_label , self.data_label_casual ,  self.data_label_registered, self.data_features = self.preprocess(input_data, mode, one_hot_encoding)
@@ -157,8 +158,8 @@ class Model(object):
             return features
 
     def train(self):
-        model_casual     = GradientBoostingRegressor(**self.model_param)
-        model_registered = GradientBoostingRegressor(**self.model_param)
+        model_casual     = RandomForestRegressor(**self.model_param)
+        model_registered = RandomForestRegressor(**self.model_param)
 
         model_casual.fit(self.data_features, self.data_label_casual)
         model_registered.fit(self.data_features, self.data_label_registered)
