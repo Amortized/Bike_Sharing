@@ -6,7 +6,7 @@ Kaggle Competition
 
 
 ** Split the train data into train_,csv and validate_.csv **
-** I have randomly put 10,000 records into train_.csv and remaining 887 records into the validation set ***
+** I have randomly put 10,000 records into train_.csv and remaining 887 records into the validation set (validate_.csv)***
 
 <b> Assumption : If you look at the way kaggle provided data for this competition, there is implied rule that you cannot use the future to predict the past.I have used the entire tranining set for learning the model and used that model to predict the test set. This violates the way the model would work in real world.  
 
