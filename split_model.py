@@ -55,7 +55,7 @@ class Model(object):
                 label2 = np.array([float(ele[10]) for ele in data])
                 label  = np.array([float(ele[11]) for ele in data])
             except :
-                print "Test file needs to have mode 1"
+                print("Test file needs to have mode 1")
                 sys.exit(1)
         elif mode == 1:
             #There is no label for test set
@@ -198,7 +198,7 @@ class Model(object):
         for i in range(0, len(y_predict)):
             rmsle += math.pow((math.log(y_predict[i] + 1) - math.log(self.data_label[i] + 1)), 2)
         rmsle = math.sqrt( (rmsle / float(len(y_predict))) )
-        print "Root Mean Squared Log Error " +  str(rmsle);
+        print("Root Mean Squared Log Error " +  str(rmsle));
 
 
 
@@ -207,9 +207,9 @@ class Model(object):
 if __name__ == '__main__':
     args = list(sys.argv[1:])
     if len(args) < 2:
-        print "For Training -> python split_model.py 0 <train-file> <casual_model_object> <registered_model_object> <one-hot-encoding>"
-        print "For validation -> python split_model.py 2 <validate-file> <casual_model_object> <registered_model_object>  <one-hot-encoding>"
-        print "For Test     -> python split_model.py 1 <test-file> <casual_model_object> <registered_model_object>  <one-hot-encoding> <output-file>"
+        print("For Training -> python split_model.py 0 <train-file> <casual_model_object> <registered_model_object> <one-hot-encoding>")
+        print("For validation -> python split_model.py 2 <validate-file> <casual_model_object> <registered_model_object>  <one-hot-encoding>")
+        print("For Test     -> python split_model.py 1 <test-file> <casual_model_object> <registered_model_object>  <one-hot-encoding> <output-file>")
         sys.exit(1)
 
     if int(args[0]) in [0,1,2]:
@@ -231,7 +231,7 @@ if __name__ == '__main__':
             #Add up the predictions
             y_predict = [casual_y_predict[i] + registered_y_predict[i] for i in range(0, len(casual_y_predict))]
 
-            print "Training ... "
+            print("Training ... ")
             m.evaluate(y_predict)
             #Save the object"
             pickle.dump(model_casual, open(args[2], "wb"))
@@ -249,7 +249,7 @@ if __name__ == '__main__':
             y_predict = [casual_y_predict[i] + registered_y_predict[i] for i in range(0, len(casual_y_predict))]
 
             if int(args[0]) == 2:
-                print "Validation ..."
+                print("Validation ...")
                 m.evaluate(y_predict)
             else:
                 output = open(args[5], 'w')
@@ -259,7 +259,7 @@ if __name__ == '__main__':
                 output.close()
 
     else:
-        print "Invalid Input"
+        print("Invalid Input")
 
 
 
