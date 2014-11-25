@@ -89,7 +89,10 @@ class Model(object):
                     
 
                     #Year
-                    dp.append(int(parse_dt.tm_year))
+                    if int(parse_dt.tm_year) == 2011:
+                        dp.append(0)
+                    else:
+                        dp.append(1)
                     
                     #Bind based on time + working_day
                     if int(ele[3]) == 1 and (int(parse_dt.tm_hour) in [7,8,17,18,19]):
@@ -125,16 +128,17 @@ class Model(object):
                        'hr19', 'hr20', 'hr21', 'hr22', 'hr23', 'hr24', \
                        'tw1', 'tw2', 'tw3', 'tw4', 'tw5', 'tw6', 'tw7', \
                        'tb1', 'tb2', 'tb3', 'tb4', 'tb5', \
-                       'y1', 'y2', \
-                       'working_day_peak1', 'working_day_peak2', \
-                       'non_working_day_peak1', 'non_working_day_peak2', \
-                       'casual_nonpeak_mon', 'casual_peak_mon', \
                        'season1', 'season2', 'season3', 'season4', 'holiday1', 'holiday2', 'workingday1', 'workingday2', \
-                       'weather1', 'weather2', 'weather3', 'weather4', 'temp', 'atemp', 'humidity', 'windspeed']
+                       'weather1', 'weather2', 'weather3', 'weather4', \
+                       'year', \
+                       'working_day_peak', \
+                       'non_working_day_peak', \
+                       'casual_nonpeak_mon', \
+                       'temp', 'atemp', 'humidity', 'windspeed']
 
 
         #One-hot encoding on categorical features
-        params = {'categorical_features' : np.array([0,1,2,3,4,5,6,7,8,9,10])}
+        params = {'categorical_features' : np.array([0,1,2,7,8,9,10])}
         enc = OneHotEncoder(**params)
         
          
